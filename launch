@@ -1,0 +1,12 @@
+
+if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
+    package.path = package.path .. os.getenv("LUA_PATH")
+    require("lldebugger").start()
+end
+
+
+lstg.FileManager.AddSearchPath("data/script/")
+lstg.FileManager.AddSearchPath("data/res/")
+
+
+lstg.SetBGMVolume(0.6)

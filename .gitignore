@@ -1,0 +1,9 @@
+
+.vscode
+
+LuaSTG*
+config.json
+engine.log
+userdata/
+
+tools/
