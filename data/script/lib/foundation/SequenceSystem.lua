@@ -4,15 +4,16 @@
 ---@field current_sequence foundation.SequenceSystem.Sequence
 ---@field coroutine thread
 ---@field add fun(self:foundation.SequenceSystem, sequence:foundation.SequenceSystem.Sequence)
----@field next fun(self:foundation.SequenceSystem, sequence?:foundation.SequenceSystem.Sequence)
+---@field next fun(self:foundation.SequenceSystem, sequence?:foundation.SequenceSystem.Sequence, pop?:boolean)
 ---@field back fun(self:foundation.SequenceSystem)
+---@field update fun(self:foundation.SequenceSystem,...)
 local M = {}
 
 ---@class foundation.SequenceSystem.Sequence
----@field fun fun(system:foundation.SequenceSystem)
+---@field fun fun(system:foundation.SequenceSystem,...)
 ---@field out fun(system:foundation.SequenceSystem)
----@field init fun(system:foundation.SequenceSystem)
----@field update fun(system:foundation.SequenceSystem)
+---@field init fun(system:foundation.SequenceSystem,...)
+---@field update fun(system:foundation.SequenceSystem,...)
 M.Sequence = {}
 
 local passthrough = function () end
@@ -36,9 +37,12 @@ function M.new()
             table.insert(self.queue,sequence)
         end
     end
-    function self:next(sequence) --if the sequence is nil, pop the queue, else, execute the sequence
+    function self:next(sequence,pop) --if the sequence is nil, pop the queue, else, execute the sequence
         self.current_sequence.out(self)
         if sequence then
+            if pop then
+                table.remove(self.queue,1)
+            end
             self.current_sequence = sequence
         else
             self.current_sequence = table.remove(self.queue, 1)
@@ -51,14 +55,14 @@ function M.new()
         self.current_sequence = table.remove(self.stack)
         self.coroutine = nil
     end
-    function self:update()
+    function self:update(...)
         local sequence = self.current_sequence
         if self.coroutine == nil then
-            sequence.init(self)
+            sequence.init(self,...)
             self.coroutine = coroutine.create(sequence.fun)
         end
-        sequence.update(self)
-        local ok, ret = coroutine.resume(self.coroutine,self)
+        sequence.update(self,...)
+        local ok, ret = coroutine.resume(self.coroutine,self,...)
         if not ok then
             error(ret)
         end
@@ -66,10 +70,10 @@ function M.new()
     return self
 end
 
----@param fun fun(system:foundation.SequenceSystem)
----@param out? fun(system:foundation.SequenceSystem)
----@param init? fun(system:foundation.SequenceSystem)
----@param update? fun(system:foundation.SequenceSystem)
+---@param fun fun(system:foundation.SequenceSystem,...)
+---@param out? fun(system:foundation.SequenceSystem,...)
+---@param init? fun(system:foundation.SequenceSystem,...)
+---@param update? fun(system:foundation.SequenceSystem,...)
 ---@return foundation.SequenceSystem.Sequence
 function M.Sequence.new(fun, out, init, update)
     ---@class foundation.SequenceSystem.Sequence

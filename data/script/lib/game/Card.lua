@@ -1,49 +1,84 @@
-
----@class game.card
+---@class boss.Card
 local M = {}
+local SequenceSystem = require('lib.foundation.SequenceSystem')
+local Task = require "lib.foundation.Task"
+local passthrough = function() end
 
----@param name string? card name, if nil or '' the card is a nonspell
----@param t1 number invulnerability time (in seconds)
----@param t2 number resistance time (in seconds)
----@param t3 number total time (in seconds)
----@param hp number
----@param drops table
----@param bomb_immune boolean
----@return game.card.Card
-function M.new(name, t1, t2, t3, hp, drops, bomb_immune)
-    ---@class game.card.Card
-    ---@field before    fun(self: game.boss.Boss.obj)?
-    ---@field init      fun(self: game.boss.Boss.obj)?
-    ---@field frame     fun(self: game.boss.Boss.obj)?
-    ---@field render    fun(self: game.boss.Boss.obj)?
-    ---@field beforedel fun(self: game.boss.Boss.obj)?
-    ---@field del       fun(self: game.boss.Boss.obj)?
-    ---@field after     fun(self: game.boss.Boss.obj)?
+M.exit_codes = {
+    NOT_FINISHED = 0,
+    KILLED = 1,
+    TIMED_OUT = 2
+}
+
+-- for the coroutine function in the sequence:
+-- function (sequence_system,boss, card_context)
+-- this is how the parameters are passed
+-- boss is a TABLE of bosses
+-- card_context is where you'll store any variables pertaining to the current spell
+--  example: time passed
+
+---@return boss.Card
+---this is for creating a naked card
+function M.new(cofunc, out, init, update)
     local self = {}
-
-    if not name then
-        name = ''
-    end
-    self.name = name
-
-    assert(
-        t1 <= t2 and t2 <= t3,
-        't1 <= t2 <= t3 must be true\n' ..
-        't1 is invulnerability time, t2 is resistance time, and t3 is total time\n' ..
-        'note that invulnerability/resistance times do not add to total time'
-    )
-
-    self.t1 = math.floor(t1 * 60)
-    self.t2 = math.floor(t2 * 60)
-    self.t3 = math.floor(t3 * 60)
-    self.hp = hp
-    self.is_sc = name ~= ''
-    self.drops = drops
-    self.bomb_immune = bomb_immune
-    self.is_pattern = true
-
+    self.sequence = SequenceSystem.Sequence.new(cofunc, out, init, update)
     return self
 end
 
+function M.newPattern(name,time,hp,is_survival)
+    local self = {}
+    self.name = name
+    self.time = time
+    self.hp = hp
+    self.is_survival = is_survival
+    ---@type fun(seqsys?:foundation.SequenceSystem, boss?:game.boss, context?:table)
+    self.before = passthrough
+    ---@type fun(seqsys?:foundation.SequenceSystem, boss?:game.boss, context?:table)
+    self.init = passthrough
+    ---@type fun(seqsys?:foundation.SequenceSystem, boss?:game.boss, context?:table)
+    self.frame = passthrough
+    ---@type fun(self:boss.Card,seqsys?:foundation.SequenceSystem, boss?:game.boss[], context?:table)
+    self.kill = passthrough
+    function self:exit_condition (seqsys,boss,context) --redefine this if you need
+        if context.timer >= context.time*60 then
+            return M.exit_codes.TIMED_OUT
+        end
+        for k, obj in ipairs(boss) do
+            if obj.hp <= 0 and not self.is_survival then
+                context.boss_killed = k
+                return M.exit_codes.KILLED --return non 0 to end the spell 
+            end
+        end
+        return M.exit_codes.NOT_FINISHED
+    end
+    --context is for storing variables such as how much time is left and has passed
+    --storing what happened for the spell to end
+    --as well as storing the next spell (if its null, its going to the next one as normal, but if it's not, it's going to replace the next card with this one)
+    self.sequence = SequenceSystem.Sequence.new(function (seqsys,boss,context)
+        for k, obj in ipairs(boss) do
+            obj.timer = 0
+            Task.clear(obj)
+            boss:setBaseHP(self.hp)
+        end
+        context.time = self.time --copying time value so it can be changed
+        context.timer = 0 --this is how much time has passed
+        self:before(boss, context)
+        --here call both systems to track a spell starting, and the visual effects
+        for k, obj in ipairs(boss) do
+            obj.timer = 0
+        end
+        self:init(boss, context)
+        context.exit_con = M.exit_codes.NOT_FINISHED
+        while context.exit_con ~= M.exit_codes.NOT_FINISHED do
+            context.exit_con = self:exit_condition(seqsys,boss,context)
+            self:frame(boss, context)
+            coroutine.yield()
+        end
+        context.next_pattern = self:kill(boss, context)
+        ---boss explode and everything
+    
+    end)
+    return self
+end
 
 return M
