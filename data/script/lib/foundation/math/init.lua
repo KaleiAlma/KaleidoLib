@@ -75,3 +75,4 @@ function math.combin(ord, sum)
     sum = math.floor(sum)
     return math.factorial(sum) / (math.factorial(ord) * math.factorial(sum - ord))
 end
+
