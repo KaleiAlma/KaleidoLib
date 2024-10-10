@@ -1,14 +1,14 @@
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Task = require('lib.foundation.Task')
 
 ---@class game.Tasker: foundation.object.class
-local Tasker = ObjLib.createClass()
+local Tasker = Object.createClass()
 
 ---@param f function
 function Tasker.new(f)
     ---@class game.Tasker.obj: lstg.GameObject
     ---@field task foundation.task.manager
-    local self = ObjLib.newInst(Tasker)
+    local self = Object.newInst(Tasker)
     self.group = GROUP.GHOST
     Task.new(self, f)
 end

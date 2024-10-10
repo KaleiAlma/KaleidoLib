@@ -5,10 +5,10 @@ local Canvas = require('lib.foundation.Canvas')
 local ScreenResources = require('lib.foundation.ScreenResources')
 local Resources       = require('lib.foundation.Resources')
 
----@class foundation.scenemgr
+---@class foundation.scenemanager
 local M = {}
 
----@class foundation.scenemgr.Scene
+---@class foundation.scenemanager.Scene
 local Scene = {}
 
 function Scene:getName()
@@ -48,10 +48,10 @@ local exit_signal = false
 
 local load_flag = false
 
----@type foundation.scenemgr.Scene
+---@type foundation.scenemanager.Scene
 local current_scene = makeInstance(Scene)
 
----@type foundation.scenemgr.Scene?
+---@type foundation.scenemanager.Scene?
 local current_loader = nil
 
 ---@type string
@@ -63,12 +63,12 @@ local next_scene_name = nil
 ---@type string?
 local next_loader_name = nil
 
----@type table<string, foundation.scenemgr.Scene>
+---@type table<string, foundation.scenemanager.Scene>
 local scene_set = {
     ["__default__"] = Scene,
 }
 
----@type table<string, foundation.scenemgr.Scene>
+---@type table<string, foundation.scenemanager.Scene>
 local loader_set = {}
 
 ---@param scene_name string
@@ -97,7 +97,7 @@ function M.setNextLoader(loader_name)
     next_loader_name = loader_name
 end
 
----@return foundation.scenemgr.Scene
+---@return foundation.scenemanager.Scene
 function M.getCurrent()
     return current_scene
 end
@@ -178,8 +178,8 @@ function M.onDeactivated()
 end
 
 ---@param scene_name string
----@param scene_type foundation.scenemgr.Scene?
----@return foundation.scenemgr.Scene
+---@param scene_type foundation.scenemanager.Scene?
+---@return foundation.scenemanager.Scene
 function M.add(scene_name, scene_type)
     assert(type(scene_name) == "string")
     -- assert(string.len(scene_name) > 0)
@@ -203,8 +203,8 @@ function M.add(scene_name, scene_type)
 end
 
 ---@param loader_name string
----@param loader_type? foundation.scenemgr.Scene
----@return foundation.scenemgr.Scene
+---@param loader_type? foundation.scenemanager.Scene
+---@return foundation.scenemanager.Scene
 function M.addLoader(loader_name, loader_type)
     assert(type(loader_name) == "string")
     -- assert(string.len(loader_name) > 0)

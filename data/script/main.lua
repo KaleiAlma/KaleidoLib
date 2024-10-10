@@ -2,8 +2,8 @@ require('lib.foundation.mainloop')
 require('lib.foundation.globals')
 
 local Plugin = require('lib.foundation.Plugin')
-local SceneMgr = require('lib.foundation.SceneMgr')
-local ObjLib = require('lib.foundation.ObjLib')
+local SceneManager = require('lib.foundation.SceneManager')
+local Object = require('lib.foundation.Object')
 local Canvas = require('lib.foundation.Canvas')
 local Screen = require('lib.foundation.Screen')
 local Setting = require('lib.foundation.Setting')
@@ -21,7 +21,7 @@ require('lib.game.scene')
 require('lib.menu.loaders.game_loader')
 
 
-SceneMgr.setNext('Game')
+SceneManager.setNext('Game')
 
 vars.player.name = 'marisa'
 
@@ -130,8 +130,8 @@ function test_stage:init()
     -- Task.new(self, function()
     --     Task.wait(180)
     --     lstg.PlaySound('kira00', 0.6, -0.5)
-    --     -- local b = ObjLib.newInst(Bullet.RGBBullet, 'arrow_big', lstg.Color(0xFF119999))
-    --     -- local b = ObjLib.newInst(Bullet.Bullet, 'arrow_big', Bullet.COLOR.CHARTREUSE)
+    --     -- local b = Object.newInst(Bullet.RGBBullet, 'arrow_big', lstg.Color(0xFF119999))
+    --     -- local b = Object.newInst(Bullet.Bullet, 'arrow_big', Bullet.COLOR.CHARTREUSE)
     --     -- local b = Bullet.fire('arrow_big', Bullet.COLOR.CYAN, -200, 200, 3, -45, false, false, 3)
     --     local l = Bullet.fireGroup('arrow_big', Bullet.COLOR.CYAN, -200, 200, 2.2, -45, 6, 90, false, false)
 

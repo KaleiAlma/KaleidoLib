@@ -1,5 +1,5 @@
 local Canvas = require('lib.foundation.Canvas')
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Task = require('lib.foundation.Task')
 local Tasker = require('lib.game.Tasker')
 local instances = require('lib.game.instances')
@@ -49,7 +49,7 @@ local bullet_data = require('assets.game.bullet').data.bullet_data
 --#region
 
 ---@class game.bullet.Bullet: foundation.object.class
-M.Bullet = ObjLib.createClass(true)
+M.Bullet = Object.createClass(true)
 M.Bullet.render_group = RDR_GROUP.FIELD
 
 ---@param bullet_type string
@@ -58,7 +58,7 @@ M.Bullet.render_group = RDR_GROUP.FIELD
 ---@return game.bullet.Bullet.obj
 function M.Bullet.new(bullet_type, color, indestructible)
     ---@class game.bullet.Bullet.obj: game.RenderBullet
-    local self = ObjLib.newInst(M.Bullet)
+    local self = Object.newInst(M.Bullet)
 
     self.group = GROUP.ENEMY_BULLET
     self.indes = not not indestructible
@@ -108,14 +108,14 @@ function M.Bullet:del()
 end
 
 ---@class game.bullet.BulletBreak: foundation.object.class
-M.BulletBreak = ObjLib.createClass(true)
+M.BulletBreak = Object.createClass(true)
 M.BulletBreak.render_group = RDR_GROUP.FIELD
 
 ---@param bullet game.bullet.Bullet.obj
 ---@return game.bullet.BulletBreak.obj
 function M.BulletBreak.new(bullet)
     ---@class game.bullet.BulletBreak.obj: game.RenderObject
-    local self = ObjLib.newInst(M.BulletBreak)
+    local self = Object.newInst(M.BulletBreak)
 
     self.group = GROUP.GHOST
     self.color = bullet.color
@@ -152,7 +152,7 @@ function M.BulletBreak:frame()
 end
 
 ---@class game.bullet.RGBBullet: foundation.object.class
-M.RGBBullet = ObjLib.createClass(true)
+M.RGBBullet = Object.createClass(true)
 M.RGBBullet.render_group = RDR_GROUP.FIELD
 
 ---@param bullet_type string
@@ -161,7 +161,7 @@ M.RGBBullet.render_group = RDR_GROUP.FIELD
 ---@return game.bullet.RGBBullet.obj
 function M.RGBBullet.new(bullet_type, color, indestructible)
     ---@class game.bullet.RGBBullet.obj: game.RenderObject
-    local self = ObjLib.newInst(M.RGBBullet)
+    local self = Object.newInst(M.RGBBullet)
 
     -- if indestructible then
     --     self.group = GROUP.INDES
@@ -210,7 +210,7 @@ function M.RGBBullet:kill()
     -- Item.ValueMinor.new(self.x, self.y)  
     local b = Canvas.field.bound
     if lstg.BoxCheck(self, b.l, b.r, b.b, b.t) then
-        ObjLib.newInst(M.RGBBulletBreak, self)
+        Object.newInst(M.RGBBulletBreak, self)
     end
 end
 
@@ -218,12 +218,12 @@ end
 function M.RGBBullet:del()
     local b = Canvas.field.bound
     if lstg.BoxCheck(self, b.l, b.r, b.b, b.t) then
-        ObjLib.newInst(M.RGBBulletBreak, self)
+        Object.newInst(M.RGBBulletBreak, self)
     end
 end
 
 ---@class game.bullet.RGBBulletBreak: foundation.object.class
-M.RGBBulletBreak = ObjLib.createClass(true)
+M.RGBBulletBreak = Object.createClass(true)
 M.RGBBulletBreak.render_group = RDR_GROUP.FIELD
 
 
@@ -231,7 +231,7 @@ M.RGBBulletBreak.render_group = RDR_GROUP.FIELD
 ---@return game.bullet.RGBBulletBreak.obj
 function M.RGBBulletBreak.new(bullet)
     ---@class game.bullet.RGBBulletBreak.obj: game.RenderObject
-    local self = ObjLib.newInst(M.RGBBulletBreak)
+    local self = Object.newInst(M.RGBBulletBreak)
 
     self.group = GROUP.GHOST
     self.color = bullet.color
@@ -432,7 +432,7 @@ function M.fireGroupRGB(bullet_type, color, x, y, v, ang, n, spread, aim, indest
 end
 
 ---@class game.bullet.BulletDeleter: foundation.object.class
-M.BulletDeleter = ObjLib.createClass()
+M.BulletDeleter = Object.createClass()
 
 ---@param x number
 ---@param y number
@@ -441,7 +441,7 @@ M.BulletDeleter = ObjLib.createClass()
 ---@return game.bullet.BulletDeleter.obj
 function M.BulletDeleter.new(x, y, kill_indes, kill)
     ---@class game.bullet.BulletDeleter.obj: game.Bullet
-    local self = ObjLib.newInst(M.BulletDeleter)
+    local self = Object.newInst(M.BulletDeleter)
 
     self.group = GROUP.PLAYER
     self.x = x

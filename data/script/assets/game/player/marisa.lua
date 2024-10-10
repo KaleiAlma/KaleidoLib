@@ -1,4 +1,4 @@
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Canvas = require('lib.foundation.Canvas')
 local Sound = require('lib.foundation.Sound')
 local Task = require('lib.foundation.Task')
@@ -54,43 +54,43 @@ end
 -- forwards declarations
 
 ---@class marisa.option: foundation.object.class
-local option = ObjLib.createClass(true)
+local option = Object.createClass(true)
 option.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.bomb_option: foundation.object.class
-local bomb_option = ObjLib.createClass(true)
+local bomb_option = Object.createClass(true)
 bomb_option.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.missle: foundation.object.class
-local missle = ObjLib.createClass()
+local missle = Object.createClass()
 missle.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.missle_ef: foundation.object.class
-local missle_ef = ObjLib.createClass()
+local missle_ef = Object.createClass()
 missle_ef.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.laser: foundation.object.class
-local laser = ObjLib.createClass()
+local laser = Object.createClass()
 laser.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.hit_ef: foundation.object.class
-local hit_ef = ObjLib.createClass()
+local hit_ef = Object.createClass()
 hit_ef.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.ndlaser: foundation.object.class
-local ndlaser = ObjLib.createClass(true)
+local ndlaser = Object.createClass(true)
 ndlaser.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.sp_ef: foundation.object.class
-local sp_ef = ObjLib.createClass()
+local sp_ef = Object.createClass()
 sp_ef.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.spark: foundation.object.class
-local spark = ObjLib.createClass(true)
+local spark = Object.createClass(true)
 spark.render_group = RDR_GROUP.FIELD
 
 ---@class marisa.spark_wave: foundation.object.class
-local spark_wave = ObjLib.createClass(true)
+local spark_wave = Object.createClass(true)
 spark_wave.render_group = RDR_GROUP.FIELD
 
 
@@ -420,7 +420,7 @@ local ndlaser_colors = {lstg.Color(0xFF66BB55), lstg.Color(0xFF5588CC), lstg.Col
 ---@param opt marisa.bomb_option.obj
 function ndlaser.new(opt)
     ---@class marisa.ndlaser.obj: game.RenderObject
-    local self = ObjLib.newInst(ndlaser)
+    local self = Object.newInst(ndlaser)
 
     self.group = GROUP.SPELL
     self.layer = LAYER.PLAYER_BULLET
@@ -474,7 +474,7 @@ end
 
 function sp_ef.new(x, y, player)
     ---@class marisa.sp_ef.obj: game.Object
-    local self = ObjLib.newInst(sp_ef)
+    local self = Object.newInst(sp_ef)
 
     self.group = GROUP.GHOST
     self.layer = LAYER.PLAYER_BULLET
@@ -505,7 +505,7 @@ end
 ---@param player game.player.Player.obj
 function spark.new(player)
     ---@class marisa.spark.obj: game.RenderObject
-    local self = ObjLib.newInst(spark)
+    local self = Object.newInst(spark)
 
     self.group = GROUP.GHOST
     self.layer = LAYER.PLAYER_BULLET
@@ -553,7 +553,7 @@ end
 ---@param spark marisa.spark.obj
 function spark_wave.new(spark)
     ---@class marisa.spark_wave.obj: game.RenderObject
-    local self = ObjLib.newInst(spark_wave)
+    local self = Object.newInst(spark_wave)
 
     self.group = GROUP.SPELL
     self.layer = LAYER.PLAYER_BULLET

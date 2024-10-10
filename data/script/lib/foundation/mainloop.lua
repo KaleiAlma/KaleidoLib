@@ -1,6 +1,6 @@
 local Debugger  = require('lib.foundation.Debugger')
-local SceneMgr  = require('lib.foundation.SceneMgr')
-local ObjectLib = require('lib.foundation.ObjLib')
+local SceneManager  = require('lib.foundation.SceneManager')
+local ObjectLib = require('lib.foundation.Object')
 local ScreenResources = require('lib.foundation.ScreenResources')
 local Screen = require('lib.foundation.Screen')
 local Canvas = require('lib.foundation.Canvas')
@@ -22,16 +22,16 @@ end
 
 function FrameFunc()
     Debugger.update()
-    SceneMgr.update()
+    SceneManager.update()
     Debugger.layout()
     lstg.SetTitle(string.format('%.2f' ,lstg.GetFPS()))
-    return SceneMgr.getExitSignal()
+    return SceneManager.getExitSignal()
 end
 
 function RenderFunc()
     lstg.BeginScene()
     ScreenResources.updateScreenResources()
-    SceneMgr.render()
+    SceneManager.render()
     Debugger.draw()
     lstg.EndScene()
     ---@diagnostic disable-next-line: deprecated
@@ -41,9 +41,9 @@ function RenderFunc()
 end
 
 function FocusLoseFunc()
-    SceneMgr.onDeactivated()
+    SceneManager.onDeactivated()
 end
 
 function FocusGainFunc()
-    SceneMgr.onActivated()
+    SceneManager.onActivated()
 end

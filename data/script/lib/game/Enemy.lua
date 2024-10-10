@@ -1,4 +1,4 @@
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Task = require('lib.foundation.Task')
 local Sound = require('lib.foundation.Sound')
 local vars = require('lib.game.vars')
@@ -55,7 +55,7 @@ end
 
 
 ---@class game.enemy.Enemy: foundation.object.class
-M.Enemy = ObjLib.createClass()
+M.Enemy = Object.createClass()
 M.Enemy.render_group = RDR_GROUP.FIELD
 
 ---@param hp number
@@ -66,7 +66,7 @@ M.Enemy.render_group = RDR_GROUP.FIELD
 function M.Enemy.new(hp, no_collide_player, wisys, ...)
     ---@class game.enemy.Enemy.obj: game.Enemy
     ---@field wisys game.WalkImageSystemInst?
-    local self = ObjLib.newInst(M.Enemy)
+    local self = Object.newInst(M.Enemy)
 
     self.group = GROUP.ENEMY
     self.layer = LAYER.ENEMY
@@ -115,7 +115,7 @@ end
 
 
 ---@class game.enemy.DeathEff: foundation.object.class
-M.DeathEff = ObjLib.createClass(true)
+M.DeathEff = Object.createClass(true)
 M.DeathEff.render_group = RDR_GROUP.FIELD
 
 ---@param x number
@@ -123,7 +123,7 @@ M.DeathEff.render_group = RDR_GROUP.FIELD
 ---@return game.enemy.DeathEff.obj
 function M.DeathEff.new(x, y)
     ---@class game.enemy.DeathEff.obj: game.RenderObject
-    local self = ObjLib.newInst(M.DeathEff)
+    local self = Object.newInst(M.DeathEff)
 
     lstg.PlaySound('enep00', 0.3, self.x / 256)
 

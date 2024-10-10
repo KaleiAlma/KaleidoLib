@@ -1,9 +1,9 @@
-local SceneMgr = require('lib.foundation.SceneMgr')
+local SceneManager = require('lib.foundation.SceneManager')
 local Resources = require('lib.foundation.Resources')
 
 --- A blank loading screen.
----@class menu.loaders.DefaultLoader: foundation.scenemgr.Scene
-local DefaultLoader = SceneMgr.addLoader('Default')
+---@class menu.loaders.DefaultLoader: foundation.scenemanager.Scene
+local DefaultLoader = SceneManager.addLoader('Default')
 
 function DefaultLoader:onCreate()
 end

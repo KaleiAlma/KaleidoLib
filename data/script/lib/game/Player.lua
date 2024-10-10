@@ -1,6 +1,6 @@
 local Canvas = require('lib.foundation.Canvas')
 local KeyInput = require('lib.foundation.KeyInput')
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Task = require('lib.foundation.Task')
 local Sound = require('lib.foundation.Sound')
 local Shapes = require('lib.foundation.Shapes')
@@ -86,7 +86,7 @@ end
 --#region
 
 ---@class game.player.Player: foundation.object.class
-M.Player = ObjLib.createClass(true)
+M.Player = Object.createClass(true)
 M.Player.render_group = RDR_GROUP.FIELD
 
 local inputs = {'up', 'down', 'left', 'right', 'shoot', 'bomb', 'special', 'slow'}
@@ -99,7 +99,7 @@ end
 function M.Player.new(chardef)
     ---@class game.player.Player.obj: lstg.GameRenderObject
     ---@field options game.player.Option.obj[]?
-    local self = ObjLib.newInst(M.Player)
+    local self = Object.newInst(M.Player)
     instances.player = self
 
     -- defaults --
@@ -342,7 +342,7 @@ end
 --#region
 
 ---@class game.player.BulletStraight: foundation.object.class
-M.BulletStraight = ObjLib.createClass()
+M.BulletStraight = Object.createClass()
 M.BulletStraight.render_group = RDR_GROUP.FIELD
 
 ---@param img string
@@ -355,7 +355,7 @@ M.BulletStraight.render_group = RDR_GROUP.FIELD
 ---@return game.player.BulletStraight.obj
 function M.BulletStraight.new(img, x, y, v, angle, dmg, break_eff)
     ---@class game.player.BulletStraight.obj: game.player.Weapon
-    local self = ObjLib.newInst(M.BulletStraight)
+    local self = Object.newInst(M.BulletStraight)
 
     self.group = GROUP.PLAYER_BULLET
     self.layer = LAYER.PLAYER_BULLET
@@ -377,7 +377,7 @@ function M.BulletStraight:kill()
 end
 
 ---@class game.player.BulletHoming: foundation.object.class
-M.BulletHoming = ObjLib.createClass()
+M.BulletHoming = Object.createClass()
 M.BulletHoming.render_group = RDR_GROUP.FIELD
 
 ---@param img string
@@ -391,7 +391,7 @@ M.BulletHoming.render_group = RDR_GROUP.FIELD
 ---@return game.player.BulletHoming.obj
 function M.BulletHoming.new(img, x, y, v, angle, dmg, trail, break_eff)
     ---@class game.player.BulletHoming.obj: game.player.Weapon
-    local self = ObjLib.newInst(M.BulletHoming)
+    local self = Object.newInst(M.BulletHoming)
 
     self.group = GROUP.PLAYER_BULLET
     self.layer = LAYER.PLAYER_BULLET
@@ -429,7 +429,7 @@ function M.BulletHoming:kill()
 end
 
 ---@class game.player.BulletBreak: foundation.object.class
-M.BulletBreak = ObjLib.createClass()
+M.BulletBreak = Object.createClass()
 M.BulletBreak.render_group = RDR_GROUP.FIELD
 
 ---@param img string
@@ -440,7 +440,7 @@ M.BulletBreak.render_group = RDR_GROUP.FIELD
 ---@return game.player.BulletBreak.obj
 function M.BulletBreak.new(img, x, y, t, dmg)
     ---@class game.player.BulletBreak.obj: game.Object
-    local self = ObjLib.newInst(M.BulletBreak)
+    local self = Object.newInst(M.BulletBreak)
 
     self.layer = LAYER.PLAYER_BULLET + 50
     self.img = img
@@ -491,7 +491,7 @@ end
 
 --- Shot options/support/orbitals
 ---@class game.player.Option: foundation.object.class
-M.Option = ObjLib.createClass(true)
+M.Option = Object.createClass(true)
 M.Option.render_group = RDR_GROUP.FIELD
 
 ---@param player game.player.Player.obj
@@ -505,7 +505,7 @@ M.Option.render_group = RDR_GROUP.FIELD
 ---@return game.player.Option.obj
 function M.Option.new(player, img, relx, rely, focus_relx, focus_rely, shotangle, omiga)
     ---@class game.player.Option.obj: game.RenderObject
-    local self = ObjLib.newInst(M.Option)
+    local self = Object.newInst(M.Option)
 
     self.group = GROUP.GHOST
     self.layer = LAYER.PLAYER
@@ -563,14 +563,14 @@ end
 --#region
 
 ---@class game.player.Grazer: foundation.object.class
-M.Grazer = ObjLib.createClass()
+M.Grazer = Object.createClass()
 M.Grazer.render_group = RDR_GROUP.FIELD
 
 ---@param player game.player.Player.obj
 ---@return game.player.Grazer.obj
 function M.Grazer.new(player)
     ---@class game.player.Grazer.obj: game.Object
-    local self = ObjLib.newInst(M.Grazer)
+    local self = Object.newInst(M.Grazer)
 
     self.group = GROUP.PLAYER
     self.layer = LAYER.ENEMY_BULLET_EF + 50
@@ -645,13 +645,13 @@ end
 
 
 ---@class game.player.DeathWeapon: foundation.object.class
-M.DeathWeapon = ObjLib.createClass()
+M.DeathWeapon = Object.createClass()
 M.DeathWeapon.render_group = RDR_GROUP.FIELD
 
 ---@return game.player.DeathWeapon.obj
 function M.DeathWeapon.new()
     ---@class game.player.DeathWeapon.obj: game.player.Weapon
-    local self = ObjLib.newInst(M.DeathWeapon)
+    local self = Object.newInst(M.DeathWeapon)
 
     -- self.x = x
     -- self.y = y
@@ -676,7 +676,7 @@ end
 
 
 ---@class game.player.DeathEff: foundation.object.class
-M.DeathEff = ObjLib.createClass()
+M.DeathEff = Object.createClass()
 M.DeathEff.render_group = RDR_GROUP.FIELD
 
 ---@param x number
@@ -685,7 +685,7 @@ M.DeathEff.render_group = RDR_GROUP.FIELD
 ---@return game.player.DeathEff.obj
 function M.DeathEff.new(x, y, second)
     ---@class game.player.DeathEff.obj: game.Object
-    local self = ObjLib.newInst(M.DeathEff)
+    local self = Object.newInst(M.DeathEff)
 
     self.x = x
     self.y = y

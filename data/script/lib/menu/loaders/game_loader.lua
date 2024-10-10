@@ -1,11 +1,11 @@
-local SceneMgr = require('lib.foundation.SceneMgr')
+local SceneManager = require('lib.foundation.SceneManager')
 local Resources = require('lib.foundation.Resources')
 local KeyInput = require('lib.foundation.KeyInput')
 local Canvas = require('lib.foundation.Canvas')
 
 --- A loading screen intended for starting gameplay.
----@class menu.loaders.GameLoader: foundation.scenemgr.Scene
-local GameLoader = SceneMgr.addLoader('Game')
+---@class menu.loaders.GameLoader: foundation.scenemanager.Scene
+local GameLoader = SceneManager.addLoader('Game')
 
 function GameLoader:onCreate()
     lstg.SetResourceStatus("global")

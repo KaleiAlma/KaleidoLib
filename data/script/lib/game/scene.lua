@@ -1,4 +1,4 @@
-local SceneMgr = require('lib.foundation.SceneMgr')
+local SceneManager = require('lib.foundation.SceneManager')
 local KeyInput = require('lib.foundation.KeyInput')
 local Group = require('lib.foundation.collision_group')
 local Canvas = require('lib.foundation.Canvas')
@@ -9,8 +9,8 @@ local Hud = require('lib.game.Hud')
 local Stage = require('lib.game.Stage')
 local vars = require('lib.game.vars')
 
----@class game.GameScene: foundation.scenemgr.Scene
-local GameScene = SceneMgr.add('Game')
+---@class game.GameScene: foundation.scenemanager.Scene
+local GameScene = SceneManager.add('Game')
 
 --#region resource loading
 
@@ -48,7 +48,7 @@ end)
 
 function GameScene:onCreate()
     Hud.init()
-    SceneMgr.setNextLoader('Game')
+    SceneManager.setNextLoader('Game')
     Resources.setCurrentMgr(resmgr)
     lstg.SetSplash(false)
     -- assets.player = require('assets.game.player.' .. vars.player.name)
@@ -79,7 +79,7 @@ function GameScene:onUpdate()
 
     -- debug
     if KeyInput.keyPressed('pause') then
-        SceneMgr.setExitSignal(true)
+        SceneManager.setExitSignal(true)
     end
 end
 

@@ -1,4 +1,4 @@
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Canvas = require('lib.foundation.Canvas')
 local Sound = require('lib.foundation.Sound')
 
@@ -32,19 +32,19 @@ end
 -- forwards declarations
 
 ---@class reimu.sp_ef1: foundation.object.class
-local sp_ef1 = ObjLib.createClass()
+local sp_ef1 = Object.createClass()
 sp_ef1.render_group = RDR_GROUP.FIELD
 
 ---@class reimu.sp_ef2: foundation.object.class
-local sp_ef2 = ObjLib.createClass()
+local sp_ef2 = Object.createClass()
 sp_ef2.render_group = RDR_GROUP.FIELD
 
 ---@class reimu.sp_ef3: foundation.object.class
-local sp_ef3 = ObjLib.createClass(true)
+local sp_ef3 = Object.createClass(true)
 sp_ef3.render_group = RDR_GROUP.FIELD
 
 ---@class reimu.bubble: foundation.object.class
-local bubble = ObjLib.createClass(true)
+local bubble = Object.createClass(true)
 bubble.render_group = RDR_GROUP.FIELD
 
 
@@ -115,7 +115,7 @@ end
 
 function sp_ef1.new(x, y, angle, t, player)
     ---@class reimu.sp_ef1.obj: game.Object
-    local self = ObjLib.newInst(sp_ef1)
+    local self = Object.newInst(sp_ef1)
 
     self.group = GROUP.SPELL
     self.layer = LAYER.PLAYER_BULLET
@@ -229,7 +229,7 @@ end
 
 function sp_ef2.new(x, y, angle, t, player)
     ---@class reimu.sp_ef2.obj: game.Object
-    local self = ObjLib.newInst(sp_ef2)
+    local self = Object.newInst(sp_ef2)
 
     self.group = GROUP.SPELL
     self.layer = LAYER.PLAYER_BULLET
@@ -320,7 +320,7 @@ local sp_ef3_colors = {lstg.Color(0xFFFF0000), lstg.Color(0xFF00FF00), lstg.Colo
 
 function sp_ef3.new(x, y, v, angle)
     ---@class reimu.sp_ef3.obj: game.RenderObject
-    local self = ObjLib.newInst(sp_ef3)
+    local self = Object.newInst(sp_ef3)
 
     self.group = GROUP.GHOST
     self.layer = LAYER.PLAYER_BULLET
@@ -352,7 +352,7 @@ end
 
 function bubble.new(x, y)
     ---@class reimu.bubble.obj: game.Object
-    local self = ObjLib.newInst(bubble)
+    local self = Object.newInst(bubble)
 
     self.group = GROUP.GHOST
     self.layer = LAYER.ENEMY_BULLET_EF

@@ -1,4 +1,4 @@
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 
 ---@class game.laser
 local M = {}
@@ -56,7 +56,7 @@ function M.Render(self)
 end
 
 ---@class game.laser.HitscanLaser: foundation.object.class
-M.HitscanLaser = ObjLib.createClass()
+M.HitscanLaser = Object.createClass()
 M.HitscanLaser.render_group = RDR_GROUP.FIELD
 
 ---@param group integer
@@ -79,7 +79,7 @@ function M.HitscanLaser.new(group, layer, x, y, angle, width, length, img1, img2
     ---@field length number
     ---@field tip_len number
     ---@field end_len number
-    local self = ObjLib.newInst(M.HitscanLaser)
+    local self = Object.newInst(M.HitscanLaser)
 
     length = length or 600
     tip_len = tip_len or 0

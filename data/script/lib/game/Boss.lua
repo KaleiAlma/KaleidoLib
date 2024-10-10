@@ -1,4 +1,4 @@
-local ObjLib = require('lib.foundation.ObjLib')
+local Object = require('lib.foundation.Object')
 local Task = require('lib.foundation.Task')
 local Sound = require('lib.foundation.Sound')
 local Enemy = require('lib.game.Enemy')
@@ -26,7 +26,7 @@ local M = {}
 ---@field postspell game.player.callback? post-spell callback (called after every pattern)
 
 ---@class game.boss.Boss: foundation.object.class
-M.Boss = ObjLib.createClass()
+M.Boss = Object.createClass()
 M.Boss.render_group = RDR_GROUP.FIELD
 
 ---@param bossdef game.boss.bossdef
@@ -34,7 +34,7 @@ M.Boss.render_group = RDR_GROUP.FIELD
 function M.Boss.new(bossdef)
     ---@class game.boss.Boss.obj: game.Enemy
     ---@field wisys game.WalkImageSystemInst?
-    local self = ObjLib.newInst(M.Boss)
+    local self = Object.newInst(M.Boss)
 
     self.group = GROUP.ENEMY
     self.layer = LAYER.ENEMY
