@@ -54,27 +54,27 @@ function M.newPattern(name,time,hp,is_survival)
     --context is for storing variables such as how much time is left and has passed
     --storing what happened for the spell to end
     --as well as storing the next spell (if its null, its going to the next one as normal, but if it's not, it's going to replace the next card with this one)
-    self.sequence = SequenceSystem.Sequence.new(function (seqsys,boss,context)
+    self.sequence = SequenceSystem.Sequence.new(function (seqsys,boss,bossseq)
         for k, obj in ipairs(boss) do
             obj.timer = 0
             Task.clear(obj)
             boss:setBaseHP(self.hp)
         end
-        context.time = self.time --copying time value so it can be changed
-        context.timer = 0 --this is how much time has passed
-        self:before(boss, context)
+        bossseq.context.time = self.time --copying time value so it can be changed
+        bossseq.context.timer = 0 --this is how much time has passed
+        self:before(boss, bossseq)
         --here call both systems to track a spell starting, and the visual effects
         for k, obj in ipairs(boss) do
             obj.timer = 0
         end
-        self:init(boss, context)
-        context.exit_con = M.exit_codes.NOT_FINISHED
-        while context.exit_con ~= M.exit_codes.NOT_FINISHED do
-            context.exit_con = self:exit_condition(seqsys,boss,context)
-            self:frame(boss, context)
+        self:init(boss, bossseq)
+        bossseq.context.exit_con = M.exit_codes.NOT_FINISHED
+        while bossseq.context.exit_con ~= M.exit_codes.NOT_FINISHED do
+            bossseq.context.exit_con = self:exit_condition(seqsys,boss,bossseq)
+            self:frame(boss, bossseq)
             coroutine.yield()
         end
-        context.next_pattern = self:kill(boss, context)
+        bossseq.context.next_pattern = self:kill(boss, bossseq)
         ---boss explode and everything
     
     end)
