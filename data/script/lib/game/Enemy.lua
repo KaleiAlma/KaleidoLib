@@ -4,10 +4,6 @@ local Sound = require('lib.foundation.Sound')
 local vars = require('lib.game.vars')
 
 
----@class game.enemy
-local M = {}
-
-
 ---@class game.Enemy: game.Object
 ---@field maxhp number
 ---@field hp number
@@ -16,6 +12,7 @@ local M = {}
 ---@field no_collide_player boolean
 ---@field master game.Enemy?
 ---@field dmg_transfer number?
+local M = Object.createClass()
 
 ---@class game.RenderEnemy: game.RenderObject
 ---@field maxhp number
@@ -54,19 +51,18 @@ function M.Colli(self, o)
 end
 
 
----@class game.enemy.Enemy: foundation.object.class
-M.Enemy = Object.createClass()
-M.Enemy.render_group = RDR_GROUP.FIELD
+---@class game.Enemy: foundation.object.class
+M.render_group = RDR_GROUP.FIELD
 
 ---@param hp number
 ---@param no_collide_player boolean?
 ---@param wisys game.WalkImageSystem?
 ---@param ... any
----@return game.enemy.Enemy.obj
-function M.Enemy.new(hp, no_collide_player, wisys, ...)
-    ---@class game.enemy.Enemy.obj: game.Enemy
+---@return game.Enemy.obj
+function M.new(hp, no_collide_player, wisys, ...)
+    ---@class game.Enemy.obj: game.Enemy
     ---@field wisys game.WalkImageSystemInst?
-    local self = Object.newInst(M.Enemy)
+    local self = Object.newInst(M)
 
     self.group = GROUP.ENEMY
     self.layer = LAYER.ENEMY
@@ -88,7 +84,7 @@ function M.Enemy.new(hp, no_collide_player, wisys, ...)
 end
 
 ---@param self game.enemy.Enemy.obj
-function M.Enemy:frame()
+function M:frame()
     if self.hp <= 0 then
         lstg.Kill(self)
     end
@@ -102,14 +98,14 @@ function M.Enemy:frame()
 end
 
 ---@param self game.enemy.Enemy.obj
-function M.Enemy:render()
+function M:render()
     if self.wisys then self.wisys:render() end
 end
 
-M.Enemy.colli = M.Colli
+M.colli = M.Colli
 
 ---@param self game.enemy.Enemy.obj
-function M.Enemy:kill()
+function M:kill()
     M.DeathEff.new(self.x, self.y)
 end
 
