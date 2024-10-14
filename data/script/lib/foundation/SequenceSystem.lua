@@ -19,7 +19,7 @@ M.Sequence = {}
 local passthrough = function () end
 
 ---@return foundation.SequenceSystem
-function M.new()
+function M.new(start_callback, next_callback)
     ---@class foundation.SequenceSystem
     local self = {}
 
@@ -27,6 +27,8 @@ function M.new()
     self.stack = {}
     self.current_sequence = nil
     self.coroutine = nil
+    self.start_callback = passthrough or start_callback
+    self.next_callback = passthrough or next_callback
 
     function self:add(sequence) --adds the sequence to the queue
         if self.current_sequence == nil then
@@ -56,15 +58,26 @@ function M.new()
         self.coroutine = nil
     end
     function self:update(...)
-        local sequence = self.current_sequence
         if self.coroutine == nil then
-            sequence.init(self,...)
-            self.coroutine = coroutine.create(sequence.fun)
+            self:start_callback(...)
+            self.current_sequence.init(self,...)
+            self.coroutine = coroutine.create(self.current_sequence.fun)
         end
-        sequence.update(self,...)
-        local ok, ret = coroutine.resume(self.coroutine,self,...)
-        if not ok then
-            error(ret)
+        self.current_sequence.update(self,...)
+        if coroutine.status(self.coroutine) ~= "dead" then
+            local ok, ret = coroutine.resume(self.coroutine,self,...)
+            if not ok then
+                error(ret)
+            end
+        elseif #self.queue > 0 then
+            if self.next_callback then
+                self:next_callback(...)
+            else
+            self:next()
+            end
+            self.coroutine = nil
+        else
+            self.coroutine = nil
         end
     end
     return self

@@ -27,7 +27,7 @@ end
 function M.new(path,autosave,default,autoformat)
     ---@class foundation.SerializedTable
     local self = {}
-    self.__data = {}
+    self.data = {}
     self.__path = path
     self.__default = default or {}
     if autoformat == nil then
@@ -44,18 +44,27 @@ function M.new(path,autosave,default,autoformat)
         end
     end
     function self:save()
-        local f, msg = io.open(self.__path, 'w')
-        if f == nil then
-            error(msg)
+        local str
+        if self.__autoformat then
+            str = JsonUtil.format_json(safe_encode_json(self.__data))
         else
-            if self.__autoformat then
-                f:write(JsonUtil.format_json(safe_encode_json(self.__data)))
-            else
-                f:write(safe_encode_json(self.__data))
-            end
-            f:close()
+            str = safe_encode_json(self.__data)
         end
-
+        if self.__path then
+            local f, msg = io.open(self.__path, 'w')
+            if f == nil then
+                error(msg)
+            else
+                if self.__autoformat then
+                    f:write(str)
+                else
+                    f:write(str)
+                end
+                f:close()
+            end
+        else
+            return str
+        end
     end
     function self:load()
         local f, msg = io.open(self.__path, 'r')
