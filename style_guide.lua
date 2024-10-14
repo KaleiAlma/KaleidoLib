@@ -37,3 +37,8 @@ return M --returning the class at the end of a file is a MUST
 --Class is used whenever you want to do a standard class. You want to do a standard class whenever you aren't actually interacting with the engine (eg. Tasks, UI)
 --Singletons should be used as a module, like math and table
 
+---To instantiate a class, just call it
+
+local Boss = require("game.Boss")
+local bossObj = Boss() --to store objects, use nameObj for better consistency
+
